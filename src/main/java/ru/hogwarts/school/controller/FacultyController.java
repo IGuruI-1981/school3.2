@@ -51,5 +51,11 @@ import java.util.Collection;
         public Faculty deleteFaculty(@PathVariable Long id) {
             return facultyService.deleteFaculty(id);
         }
+
+        @GetMapping(path = "color")
+        public ResponseEntity<Collection<Faculty>> getFacultyColor(@RequestParam String color) {
+            return ResponseEntity.ok(facultyService.findFacultyColor(color));
+        }
+
     }
 

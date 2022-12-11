@@ -29,11 +29,6 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("{age}")
-    public Collection<Student> getStudentAge(@PathVariable int age) {
-             return studentService.findStudentAge(age);
-    }
-
     @GetMapping
     public ResponseEntity<Collection<Student>> getAllStudentInfo() {
         return ResponseEntity.ok(studentService.getAllStudents());
@@ -57,4 +52,10 @@ public class StudentController {
     public Student deleteStudent(@PathVariable Long id) {
         return studentService.deleteStudent(id);
     }
+
+    @GetMapping(path = "age")
+    public ResponseEntity<Collection<Student>> getStudentAge(@RequestParam int age) {
+         return ResponseEntity.ok(studentService.findStudentAge(age));
+    }
+
 }

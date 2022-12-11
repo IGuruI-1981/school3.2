@@ -25,13 +25,6 @@ public class StudentService {
         return students.get(id);
     }
 
-    public Collection<Student> findStudentAge(int age) {
-        Collection<Student> studentResult = getAllStudents().stream()
-                .filter(a -> a.getAge() == age)
-                .collect(Collectors.toList());
-        return studentResult;
-     }
-
 
     public Student editStudent(Student student) {
         if (students.containsKey(student.getId())) {
@@ -50,4 +43,11 @@ public class StudentService {
     public Collection<Student> getAllStudents() {
         return students.values();
     }
+
+    public Collection<Student> findStudentAge(int age) {
+        return getAllStudents().stream()
+                .filter(a -> a.getAge() == age)
+                .collect(Collectors.toList());
+    }
+
 }

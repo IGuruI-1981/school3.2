@@ -44,7 +44,7 @@ import java.util.Collection;
             if (findFaculty == null) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(findFaculty);;
+            return ResponseEntity.ok(findFaculty);
         }
 
         @DeleteMapping("{id}")

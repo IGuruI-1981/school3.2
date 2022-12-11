@@ -26,7 +26,7 @@ public class StudentController {
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(student);;
     }
 
     @GetMapping("{age}")

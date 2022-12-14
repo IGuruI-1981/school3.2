@@ -41,11 +41,7 @@ import java.util.Collection;
 
         @PutMapping
         public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
-            Faculty findFaculty = facultyService.editFaculty(faculty);
-            if (findFaculty == null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            }
-            return ResponseEntity.ok(findFaculty);
+             return facultyService.editFaculty(faculty);
         }
 
         @DeleteMapping("{id}")

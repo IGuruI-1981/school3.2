@@ -29,8 +29,12 @@ public class StudentService {
     }
 
 
-    public Student editStudent(Student student) {
-        return studentRepository.save(student);
+    public ResponseEntity<Student> editStudent(Student student) {
+        Student findStudent = findStudent(student.getId());
+        if (findStudent == null) {
+            return ResponseEntity.notFound().build();
+        }
+      return ResponseEntity.ok(studentRepository.save(student));
     }
 
 

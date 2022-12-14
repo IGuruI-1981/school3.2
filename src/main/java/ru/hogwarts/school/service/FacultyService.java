@@ -1,6 +1,7 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -28,10 +29,13 @@ public class FacultyService {
         return facultyRepository.findById(id).orElse(null);
     }
 
-    public Faculty editFaculty(Faculty faculty) {
-        return facultyRepository.save(faculty);
+    public ResponseEntity<Faculty> editFaculty(Faculty faculty) {
+        Faculty findFaculty = findFaculty(faculty.getId());
+        if (findFaculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(facultyRepository.save(faculty));
     }
-
 
     public void deleteFaculty(long id) {
         facultyRepository.deleteById(id);

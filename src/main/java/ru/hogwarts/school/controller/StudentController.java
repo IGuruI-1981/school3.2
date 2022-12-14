@@ -23,11 +23,11 @@ public class StudentController {
 
     @GetMapping("{id}")
     public ResponseEntity<Student> getStudentInfo(@PathVariable Long id) {
-        Student student = studentService.findStudent(id);
-        if (student == null) {
+        Student findStudent = studentService.findStudent(id);
+        if (findStudent == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(findStudent);
     }
 
     @GetMapping
@@ -42,11 +42,7 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        Student findStudent = studentService.editStudent(student);
-        if (findStudent == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return ResponseEntity.ok(findStudent);
+            return studentService.editStudent(student);
     }
 
     @DeleteMapping("{id}")

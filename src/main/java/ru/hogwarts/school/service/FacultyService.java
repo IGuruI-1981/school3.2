@@ -7,6 +7,7 @@ import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
+import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,9 +17,11 @@ import java.util.stream.Collectors;
 public class FacultyService {
 
     private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
-    public FacultyService(FacultyRepository facultyRepository) {
+    public FacultyService(FacultyRepository facultyRepository,StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
     }
 
 
@@ -48,9 +51,9 @@ public class FacultyService {
     }
 
 
-    public Collection<Faculty> findFacultyColor (String color) {
-            return facultyRepository.findByColorIgnoreCase(color);
-    }
+//    public Collection<Faculty> findFacultyColor (String color) {
+//            return facultyRepository.findByColorIgnoreCase(color);
+//    }
 
     public Faculty findFacultyByNameOrColor(String name, String color) {
         return facultyRepository.findFacultyByNameIgnoreCaseOrColorIgnoreCase(name, color);

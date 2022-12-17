@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
@@ -29,12 +30,12 @@ public class FacultyService {
         return facultyRepository.findById(id).orElse(null);
     }
 
-    public ResponseEntity<Faculty> editFaculty(Faculty faculty) {
+    public Faculty editFaculty(Faculty faculty) {
         Faculty findFaculty = findFaculty(faculty.getId());
         if (findFaculty == null) {
-            return ResponseEntity.notFound().build();
+            throw new FacultyNotFoundException("Такой факультет не найден");
         }
-        return ResponseEntity.ok(facultyRepository.save(faculty));
+        return facultyRepository.save(faculty);
     }
 
     public void deleteFaculty(long id) {
@@ -48,6 +49,10 @@ public class FacultyService {
 
 
     public Collection<Faculty> findFacultyColor (String color) {
-            return facultyRepository.findByColor(color);
+            return facultyRepository.findByColorIgnoreCase(color);
+    }
+
+    public Faculty findFacultyByNameOrColor(String name, String color) {
+        return facultyRepository.findFacultyByNameIgnoreCaseOrColorIgnoreCase(name, color);
     }
 }

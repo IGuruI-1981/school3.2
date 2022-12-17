@@ -3,6 +3,7 @@ package ru.hogwarts.school.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
@@ -19,7 +20,6 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-
     public Student createStudent(Student student) {
         return studentRepository.save(student);
     }
@@ -29,12 +29,12 @@ public class StudentService {
     }
 
 
-    public ResponseEntity<Student> editStudent(Student student) {
+    public Student editStudent(Student student) {
         Student findStudent = findStudent(student.getId());
         if (findStudent == null) {
-            return ResponseEntity.notFound().build();
+           throw new StudentNotFoundException("Такой студент не найден");
         }
-      return ResponseEntity.ok(studentRepository.save(student));
+      return studentRepository.save(student);
     }
 
 
@@ -47,8 +47,20 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Collection<Student> findStudentAge(int age) {
+    public Collection<Student> findStudentAge(Integer age) {
         return studentRepository.findByAge(age);
+    }
+
+    public Collection<Student> findByAgeBetween(Integer minAge, Integer maxAge) {
+        return studentRepository.findByAgeBetween(minAge, maxAge);
+    }
+
+    public Student findStudentById(Long id) {
+        return studentRepository.findStudentById(id);
+    }
+
+    public Collection<Student> findStudentByFaculty_Id(Long facultyId) {
+        return studentRepository.findStudentByFaculty_Id(facultyId);
     }
 
 }

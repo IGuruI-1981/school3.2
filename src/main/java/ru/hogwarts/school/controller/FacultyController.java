@@ -30,7 +30,14 @@ import java.util.Collection;
         }
 
         @GetMapping
-        public ResponseEntity<Collection<Faculty>> getAllFacultyInfo() {
+        public ResponseEntity getAllFacultyInfo(@RequestParam(required = false) String name,
+                                                @RequestParam(required = false) String color) {
+            if (name != null && !name.isBlank()) {
+                return ResponseEntity.ok(facultyService.findFacultyByNameOrColor(name,color));
+            }
+            if (color != null && !color.isBlank()) {
+                return ResponseEntity.ok(facultyService.findFacultyByNameOrColor(name, color));
+            }
             return ResponseEntity.ok(facultyService.getAllFaculties());
         }
 
@@ -40,7 +47,7 @@ import java.util.Collection;
         }
 
         @PutMapping
-        public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
+        public Faculty editFaculty(@RequestBody Faculty faculty) {
              return facultyService.editFaculty(faculty);
         }
 
@@ -48,11 +55,6 @@ import java.util.Collection;
         public ResponseEntity deleteFaculty(@PathVariable Long id) {
             facultyService.deleteFaculty(id);
             return ResponseEntity.ok().build();
-        }
-
-        @GetMapping(path = "color")
-        public ResponseEntity<Collection<Faculty>> getFacultyColor(@RequestParam String color) {
-            return ResponseEntity.ok(facultyService.findFacultyColor(color));
         }
 
     }

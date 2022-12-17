@@ -23,15 +23,27 @@ public class StudentController {
 
     @GetMapping("{id}")
     public ResponseEntity<Student> getStudentInfo(@PathVariable Long id) {
-        Student findStudent = studentService.findStudent(id);
+        Student findStudent = studentService.findStudentById(id);
         if (findStudent == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(findStudent);
+        return ResponseEntity.ok(studentService.findStudentById(id));
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Student>> getAllStudentInfo() {
+    public ResponseEntity<Collection<Student>> getAllStudents(@RequestParam(required = false) Integer minAge,
+                                                              @RequestParam(required = false) Integer maxAge,
+                                                              @RequestParam(required = false) Long facultyId,
+                                                              @RequestParam (required = false) Integer age) {
+        if (minAge !=null && maxAge !=null ) {
+            return ResponseEntity.ok(studentService.findByAgeBetween(minAge, maxAge));
+        }
+        if (facultyId != null) {
+            return ResponseEntity.ok(studentService.findStudentByFaculty_Id(facultyId));
+        }
+        if (age != null) {
+            return ResponseEntity.ok(studentService.findStudentAge(age));
+        }
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
@@ -42,18 +54,13 @@ public class StudentController {
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-            return studentService.editStudent(student);
+            return ResponseEntity.ok(studentService.editStudent(student));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
-    }
-
-    @GetMapping(path = "age")
-    public ResponseEntity<Collection<Student>> getStudentAge(@RequestParam int age) {
-         return ResponseEntity.ok(studentService.findStudentAge(age));
     }
 
 }

@@ -52,11 +52,9 @@ public class Student {
         this.age = age;
     }
 
-    public Long getFaculty() {
-        return faculty.getId();
+    public Faculty getFaculty() {
+        return faculty;
     }
-
-
 
     @Override
     public boolean equals(Object o) {

@@ -30,15 +30,16 @@ import java.util.Collection;
         }
 
         @GetMapping
-        public ResponseEntity getAllFacultyInfo(@RequestParam(required = false) String name,
-                                                @RequestParam(required = false) String color) {
-            if (name != null && !name.isBlank()) {
-                return ResponseEntity.ok(facultyService.findFacultyByNameOrColor(name,color));
-            }
-            if (color != null && !color.isBlank()) {
-                return ResponseEntity.ok(facultyService.findFacultyByNameOrColor(name, color));
+        public ResponseEntity getAllFacultyInfo(@RequestParam(required = false) String nameOrColor) {
+                if (nameOrColor != null && !nameOrColor.isBlank()) {
+                return ResponseEntity.ok(facultyService.findFacultyByNameOrColor(nameOrColor));
             }
             return ResponseEntity.ok(facultyService.getAllFaculties());
+        }
+
+        @GetMapping(path = "color")
+        public ResponseEntity<Collection<Faculty>> getFacultyColor(@RequestParam String color) {
+            return ResponseEntity.ok(facultyService.findFacultyColor(color));
         }
 
         @PostMapping
@@ -55,6 +56,11 @@ import java.util.Collection;
         public ResponseEntity deleteFaculty(@PathVariable Long id) {
             facultyService.deleteFaculty(id);
             return ResponseEntity.ok().build();
+        }
+
+        @GetMapping("{id}/student")
+        public  Collection<Student> getStudentsByFacultyId(@PathVariable Long id) {
+             return facultyService.getStudentsByFacultyId(id);
         }
 
     }

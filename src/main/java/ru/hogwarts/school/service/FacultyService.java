@@ -51,11 +51,17 @@ public class FacultyService {
     }
 
 
-//    public Collection<Faculty> findFacultyColor (String color) {
-//            return facultyRepository.findByColorIgnoreCase(color);
-//    }
-
-    public Faculty findFacultyByNameOrColor(String name, String color) {
-        return facultyRepository.findFacultyByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    public Collection<Faculty> findFacultyColor (String color) {
+            return facultyRepository.findByColorIgnoreCase(color);
     }
+
+    public Collection<Faculty> findFacultyByNameOrColor(String nameOrColor) {
+        return facultyRepository.findFacultyByNameIgnoreCaseOrColorIgnoreCase(nameOrColor, nameOrColor);
+    }
+
+    public Collection<Student> getStudentsByFacultyId (long id) {
+        Faculty faculty = findFaculty(id);
+        return studentRepository.findAllByFaculty_Id(faculty.getId());
+    }
+
 }

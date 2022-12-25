@@ -15,8 +15,6 @@ public class Faculty {
 
     private String color;
 
-//    @OneToMany(mappedBy = "faculty")
-//    private Collection<Student> students;
 
     @Override
     public String toString() {

@@ -2,8 +2,10 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
@@ -56,6 +58,13 @@ public class StudentController {
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
+
+//    @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public Student uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile cover) {
+//        return avatarService.uploadAvatar(id,cover);
+//    }
+
+
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {

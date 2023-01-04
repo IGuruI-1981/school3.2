@@ -59,12 +59,6 @@ public class StudentController {
         return studentService.createStudent(student);
     }
 
-//    @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public Student uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile cover) {
-//        return avatarService.uploadAvatar(id,cover);
-//    }
-
-
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
@@ -75,6 +69,21 @@ public class StudentController {
     public ResponseEntity deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/student-count")
+    public Integer getCountStudent() {
+        return studentService.getCountStudent();
+    }
+
+    @GetMapping("/avg-age")
+    public Double getAvaregeAgeAllStudent() {
+        return studentService.getAvaregeAgeAllStudent();
+    }
+
+    @GetMapping("/last-five-student")
+    public List<Student> getLastFiveStudent() {
+        return studentService.getLastFiveStudent();
     }
 
 }

@@ -60,4 +60,16 @@ public class StudentService {
         return findStudent(id).getFaculty();
     }
 
+    public Integer getCountStudent() {
+        return studentRepository.getCountStudent();
+    }
+
+    public Double getAvaregeAgeAllStudent() {
+        return studentRepository.getAvaregeAgeAllStudent();
+    }
+
+    public List<Student> getLastFiveStudent() {
+        return studentRepository.getLastFiveStudent();
+    }
+
 }

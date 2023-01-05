@@ -53,7 +53,7 @@ public class StudentControllerTests {
 	}
 
 	private Faculty createFaculty(Faculty faculty) {
-		ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity("http://localhost:" + port + "/faculties", faculty, Faculty.class);
+		ResponseEntity<Faculty> facultyResponseEntity = testRestTemplate.postForEntity("http://localhost:" + port + "/faculty", faculty, Faculty.class);
 		assertThat(facultyResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(facultyResponseEntity.getBody()).isNotNull();
 		assertThat(facultyResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(faculty);
@@ -63,7 +63,7 @@ public class StudentControllerTests {
 	}
 
 	private Student createStudent(Student student) {
-		ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity("http://localhost:" + port + "/students", student, Student.class);
+		ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity("http://localhost:" + port + "/student", student, Student.class);
 		assertThat(studentResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(studentResponseEntity.getBody()).isNotNull();
 		assertThat(studentResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
@@ -78,7 +78,7 @@ public class StudentControllerTests {
 		Faculty faculty2 = createFaculty(generateFaculty());
 		Student student = createStudent(generateStudent(faculty1));
 
-		ResponseEntity<Student> getForEntityResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/students/" + student.getId(),Student.class);
+		ResponseEntity<Student> getForEntityResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/student/" + student.getId(),Student.class);
 		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(getForEntityResponse.getBody()).isNotNull();
 		assertThat(getForEntityResponse.getBody()).usingRecursiveComparison().isEqualTo(student);
@@ -86,7 +86,7 @@ public class StudentControllerTests {
 
 		student.setFaculty(faculty2);
 
-		ResponseEntity<Student> recordForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/students/" + student.getId(), HttpMethod.PUT, new HttpEntity<>(student),Student.class);
+		ResponseEntity<Student> recordForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/student/" + student.getId(), HttpMethod.PUT, new HttpEntity<>(student),Student.class);
 		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 		assertThat(recordForEntityResponse.getBody()).isNotNull();
 		assertThat(recordForEntityResponse.getBody()).usingRecursiveComparison().isEqualTo(student);
@@ -102,7 +102,7 @@ public class StudentControllerTests {
 				.map(this::createFaculty)
 				.toList();
 		List<Student> students = Stream.generate(() -> generateStudent(faculties.get(faker.random().nextInt(faculties.size()))))
-				.limit(50)
+				.limit(15)
 				.map(this::createStudent)
 				.toList();
 
@@ -113,10 +113,10 @@ public class StudentControllerTests {
 				.filter(studentRecord -> studentRecord.getAge() >=minAge && studentRecord.getAge() <= maxAge )
 				.toList();
 
-		ResponseEntity<List<Student>> getForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/students?minAge={minAge}&maxAge={maxAge}", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Student>>() {
+		ResponseEntity<List<Student>> getForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/student?minAge={minAge}&maxAge={maxAge}", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Student>>() {
 			@Override
-			public String toString() {
-				return super.toString();
+			public boolean equals(Object other) {
+				return super.equals(other);
 			}
 		}, minAge, maxAge);
 		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);

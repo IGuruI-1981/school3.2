@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/avatar")
+@Profile("!test")
 public class AvatarController {
 
 

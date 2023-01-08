@@ -1,8 +1,15 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.FacultyNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.FacultyRepository;
+import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,41 +18,62 @@ import java.util.stream.Collectors;
 @Service
 public class FacultyService {
 
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
+    private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
-    private long lastId = 0;
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
+    public FacultyService(FacultyRepository facultyRepository,StudentRepository studentRepository) {
+        this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
+    }
+
 
     public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        faculties.put(lastId, faculty);
-        return faculty;
+        logger.debug("Method called:createFaculty");
+        return facultyRepository.save(faculty);
     }
 
     public Faculty findFaculty(long id) {
-        return faculties.get(id);
+        logger.debug("Method called:findFaculty");
+        return facultyRepository.findById(id).orElse(null);
     }
 
     public Faculty editFaculty(Faculty faculty) {
-        if (faculties.containsKey(faculty.getId())) {
-            faculties.put(faculty.getId(), faculty);
-            return faculty;
+        logger.debug("Method called:editFaculty");
+        Faculty findFaculty = findFaculty(faculty.getId());
+        if (findFaculty == null) {
+            throw new FacultyNotFoundException("Такой факультет не найден");
         }
-        return null;
+        return facultyRepository.save(faculty);
     }
 
-
-    public Faculty deleteFaculty(long id) {
-        return faculties.remove(id);
+    public void deleteFaculty(long id) {
+        logger.debug("Method called:deleteFaculty");
+        facultyRepository.deleteById(id);
     }
 
 
     public Collection<Faculty> getAllFaculties() {
-        return faculties.values();
+        logger.debug("Method called:getAllFaculties");
+        return facultyRepository.findAll();
     }
 
-    public Collection<Faculty> findFacultyColor(String color) {
-             return getAllFaculties().stream()
-                    .filter(a -> a.getColor().equals(color))
-                    .collect(Collectors.toList());
+
+    public Collection<Faculty> findFacultyColor (String color) {
+        logger.debug("Method called:findFacultyColor");
+            return facultyRepository.findByColorIgnoreCase(color);
     }
+
+    public Collection<Faculty> findFacultyByNameOrColor(String nameOrColor) {
+        logger.debug("Method called:findFacultyByNameOrColor");
+        return facultyRepository.findFacultyByNameIgnoreCaseOrColorIgnoreCase(nameOrColor, nameOrColor);
+    }
+
+    public Collection<Student> getStudentsByFacultyId (long id) {
+        logger.debug("Method called:getStudentsByFacultyId");
+        Faculty faculty = findFaculty(id);
+        return studentRepository.findAllByFaculty_Id(faculty.getId());
+    }
+
 }

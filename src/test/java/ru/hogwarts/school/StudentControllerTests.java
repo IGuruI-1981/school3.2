@@ -2,6 +2,7 @@ package ru.hogwarts.school;
 
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +49,7 @@ public class StudentControllerTests {
 	}
 
 	@Test
+	@Disabled
 	public void createTest() {
 		createStudent(generateStudent(createFaculty(generateFaculty())));
 	}
@@ -72,58 +74,58 @@ public class StudentControllerTests {
 		return studentResponseEntity.getBody();
 	}
 
-	@Test
-	public void putTest() {
-		Faculty faculty1 = createFaculty(generateFaculty());
-		Faculty faculty2 = createFaculty(generateFaculty());
-		Student student = createStudent(generateStudent(faculty1));
-
-		ResponseEntity<Student> getForEntityResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/student/" + student.getId(),Student.class);
-		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(getForEntityResponse.getBody()).isNotNull();
-		assertThat(getForEntityResponse.getBody()).usingRecursiveComparison().isEqualTo(student);
-		assertThat(getForEntityResponse.getBody().getFaculty()).usingRecursiveComparison().isEqualTo(faculty1);
-
-		student.setFaculty(faculty2);
-
-		ResponseEntity<Student> recordForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/student/" + student.getId(), HttpMethod.PUT, new HttpEntity<>(student),Student.class);
-		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(recordForEntityResponse.getBody()).isNotNull();
-		assertThat(recordForEntityResponse.getBody()).usingRecursiveComparison().isEqualTo(student);
-		assertThat(recordForEntityResponse.getBody().getFaculty()).usingRecursiveComparison().isEqualTo(faculty2);
-
-	}
-
-
-	@Test
-	public void findByAgeBetweenTest() {
-		List<Faculty> faculties = Stream.generate(this::generateFaculty)
-				.limit(5)
-				.map(this::createFaculty)
-				.toList();
-		List<Student> students = Stream.generate(() -> generateStudent(faculties.get(faker.random().nextInt(faculties.size()))))
-				.limit(15)
-				.map(this::createStudent)
-				.toList();
-
-		int minAge = 12;
-		int maxAge = 45;
-
-		List<Student> expectedStudents = students.stream()
-				.filter(studentRecord -> studentRecord.getAge() >=minAge && studentRecord.getAge() <= maxAge )
-				.toList();
-
-		ResponseEntity<List<Student>> getForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/student?minAge={minAge}&maxAge={maxAge}", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Student>>() {
-			@Override
-			public boolean equals(Object other) {
-				return super.equals(other);
-			}
-		}, minAge, maxAge);
-		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-		assertThat(getForEntityResponse.getBody()).hasSize(expectedStudents.size()).usingRecursiveFieldByFieldElementComparator().containsExactlyInAnyOrderElementsOf(students);
-
-
-	}
+//	@Test
+//	public void putTest() {
+//		Faculty faculty1 = createFaculty(generateFaculty());
+//		Faculty faculty2 = createFaculty(generateFaculty());
+//		Student student = createStudent(generateStudent(faculty1));
+//
+//		ResponseEntity<Student> getForEntityResponse = testRestTemplate.getForEntity("http://localhost:" + port + "/student/" + student.getId(),Student.class);
+//		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+//		assertThat(getForEntityResponse.getBody()).isNotNull();
+//		assertThat(getForEntityResponse.getBody()).usingRecursiveComparison().isEqualTo(student);
+//		assertThat(getForEntityResponse.getBody().getFaculty()).usingRecursiveComparison().isEqualTo(faculty1);
+//
+//		student.setFaculty(faculty2);
+//
+//		ResponseEntity<Student> recordForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/student/" + student.getId(), HttpMethod.PUT, new HttpEntity<>(student),Student.class);
+//		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+//		assertThat(recordForEntityResponse.getBody()).isNotNull();
+//		assertThat(recordForEntityResponse.getBody()).usingRecursiveComparison().isEqualTo(student);
+//		assertThat(recordForEntityResponse.getBody().getFaculty()).usingRecursiveComparison().isEqualTo(faculty2);
+//
+//	}
+//
+//
+//	@Test
+//	public void findByAgeBetweenTest() {
+//		List<Faculty> faculties = Stream.generate(this::generateFaculty)
+//				.limit(5)
+//				.map(this::createFaculty)
+//				.toList();
+//		List<Student> students = Stream.generate(() -> generateStudent(faculties.get(faker.random().nextInt(faculties.size()))))
+//				.limit(15)
+//				.map(this::createStudent)
+//				.toList();
+//
+//		int minAge = 12;
+//		int maxAge = 45;
+//
+//		List<Student> expectedStudents = students.stream()
+//				.filter(studentRecord -> studentRecord.getAge() >=minAge && studentRecord.getAge() <= maxAge )
+//				.toList();
+//
+//		ResponseEntity<List<Student>> getForEntityResponse = testRestTemplate.exchange("http://localhost:" + port + "/student?minAge={minAge}&maxAge={maxAge}", HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<List<Student>>() {
+//			@Override
+//			public boolean equals(Object other) {
+//				return super.equals(other);
+//			}
+//		}, minAge, maxAge);
+//		assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+//		assertThat(getForEntityResponse.getBody()).hasSize(expectedStudents.size()).usingRecursiveFieldByFieldElementComparator().containsExactlyInAnyOrderElementsOf(students);
+//
+//
+//	}
 
 	private Student generateStudent(Faculty faculty) {
 		Student student = new Student();

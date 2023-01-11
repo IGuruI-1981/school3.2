@@ -14,7 +14,10 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -76,4 +79,30 @@ public class AvatarService {
         PageRequest pageRequest = PageRequest.of(pageNumber-1,pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
+
+    public String getIntegerValue() throws InterruptedException {
+        logger.debug("Method called:getIntegerValue");
+        Instant start = Instant.now();
+       int sum = Stream.iterate(1, a -> a +1)
+               .limit(1_000_000_0)
+               .reduce(0, (a, b) -> a + b );
+        Thread.sleep(1000);
+        Instant finish = Instant.now();
+        long elapsed = Duration.between(start, finish).toMillis();
+
+        Instant startParallel = Instant.now();
+        int sumParallel = Stream.iterate(1, a -> a +1)
+                .limit(1_000_000_0)
+                .parallel()
+                .reduce(0, (a, b) -> a + b );
+        Thread.sleep(1000);
+        Instant finishParallel = Instant.now();
+        long elapsedParallel = Duration.between(startParallel, finishParallel).toMillis();
+        String result = "Результат выполнения SUM = " + sum + ", Время выполнения - " + elapsed + "мс.  " +
+                        "Результат выполнения SUM_Parllel= " + sumParallel + ", Время выполнения - " + elapsedParallel + "мс.";
+
+       return result;
+    }
+
+
 }

@@ -9,6 +9,10 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static javax.print.attribute.standard.MediaSizeName.A;
+
 
 @Service
 public class StudentService {
@@ -48,9 +52,15 @@ public class StudentService {
     }
 
 
-//    public Collection<Student> getAllStudents() {
-//        return studentRepository.findAll();
-//    }
+    public List<String> getStudentsWithNameStartingWithA() {
+        logger.debug("Method called: getStudentsWithNameStartingWithA");
+        List<String> result = getAllStudent().stream()
+                .filter(s -> s.getName().startsWith(String.valueOf(A)))
+                .map(s -> s.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+        return result;
+    }
 
     public Collection<Student> findStudentAge(int age) {
         logger.debug("Method called:findStudentAge");
@@ -87,4 +97,15 @@ public class StudentService {
         return studentRepository.getLastFiveStudent();
     }
 
+    public OptionalDouble getAvaregeAgeAllStudentNew() {
+        logger.debug("Method called:getAvaregeAgeAllStudentNew");
+        return getAllStudent().stream()
+                .mapToInt(s -> s.getAge())
+                .average();
+    }
+
+    public List<Student> getAllStudent() {
+        logger.debug("Method called:getAllStudent");
+        return studentRepository.findAll();
+    }
 }

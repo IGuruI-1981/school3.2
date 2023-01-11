@@ -66,4 +66,10 @@ public class AvatarController {
 
     }
 
+    @GetMapping("/integer-velue")
+    public String getIntegerValue() throws InterruptedException {
+        return avatarService.getIntegerValue();
+    }
+
+
 }

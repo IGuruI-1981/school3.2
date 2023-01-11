@@ -9,8 +9,9 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.List;
 
-    @RestController
+@RestController
     @RequestMapping("/faculty")
     @Profile("!test")
     public class FacultyController {
@@ -64,6 +65,13 @@ import java.util.Collection;
         public  Collection<Student> getStudentsByFacultyId(@PathVariable Long id) {
              return facultyService.getStudentsByFacultyId(id);
         }
+
+        @GetMapping("/long-name-faculty")
+        public String getLongestFacultyName() {
+             return facultyService.getLongestFacultyName();
+        }
+
+
 
     }
 

@@ -113,44 +113,44 @@ public class StudentService {
         logger.debug("Method called:getAllNameStudentStream");
         List<String> nameStudent = getAllStudent().stream().map(s -> s.getName().toUpperCase()).collect(Collectors.toList());
 
-        System.out.println(nameStudent.get(0) + " stream 0");
-        System.out.println(nameStudent.get(1) + " stream 1");
+        System.out.println(nameStudent.get(0) + " operation 0");
+        System.out.println(nameStudent.get(1) + " operation 1");
 
              new Thread(() -> {
-                System.out.println(nameStudent.get(2)+ " stream 2");
-                System.out.println(nameStudent.get(3)+ " stream 3");
+                System.out.println(nameStudent.get(2)+ " operation 2");
+                System.out.println(nameStudent.get(3)+ " operation 3");
             }).start();
 
 
             new Thread(() -> {
-                System.out.println(nameStudent.get(4)+ " stream 4");
-                System.out.println(nameStudent.get(5)+ " stream 5");
+                System.out.println(nameStudent.get(4)+ " operation 4");
+                System.out.println(nameStudent.get(5)+ " operation 5");
             }).start();
 
-        System.out.println(nameStudent.get(6) + " stream 6");
-        System.out.println(nameStudent.get(7) + " stream 7");
+        System.out.println(nameStudent.get(6) + " operation 6");
+        System.out.println(nameStudent.get(7) + " operation 7");
     }
 
     public synchronized void getAllNameStudentSynchronized() {
         logger.debug("Method called:getAllNameStudentSynchronized");
         List<String> nameStudent = getAllStudent().stream().map(s -> s.getName().toUpperCase()).collect(Collectors.toList());
 
-        System.out.println(nameStudent.get(0) + " stream 0");
-        System.out.println(nameStudent.get(1) + " stream 1");
+        System.out.println(nameStudent.get(0) + " operation 0");
+        System.out.println(nameStudent.get(1) + " operation 1");
 
              new Thread(() -> {
-                System.out.println(nameStudent.get(2)+ " stream 2");
-                System.out.println(nameStudent.get(3)+ " stream 3");
+                System.out.println(nameStudent.get(2)+ " operation 2");
+                System.out.println(nameStudent.get(3)+ " operation 3");
             }).start();
 
 
             new Thread(() -> {
-                System.out.println(nameStudent.get(4)+ " stream 4");
-                System.out.println(nameStudent.get(5)+ " stream 5");
+                System.out.println(nameStudent.get(4)+ " operation 4");
+                System.out.println(nameStudent.get(5)+ " operation 5");
             }).start();
 
-        System.out.println(nameStudent.get(6) + " stream 6");
-        System.out.println(nameStudent.get(7) + " stream 7");
+        System.out.println(nameStudent.get(6) + " operation 6");
+        System.out.println(nameStudent.get(7) + " operation 7");
     }
 
 

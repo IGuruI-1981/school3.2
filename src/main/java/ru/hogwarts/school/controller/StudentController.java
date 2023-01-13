@@ -54,9 +54,6 @@ public class StudentController {
         return ResponseEntity.ok(studentService.findStudentAge(age));
     }
 
-
-
-
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
@@ -88,6 +85,7 @@ public class StudentController {
     public Double getAvaregeAgeAllStudent() {
         return studentService.getAvaregeAgeAllStudent();
     }
+
     @GetMapping("/avg-age2")
     public OptionalDouble getAvaregeAgeAllStudentNew() {
         return studentService.getAvaregeAgeAllStudentNew();
@@ -97,6 +95,18 @@ public class StudentController {
     public List<Student> getLastFiveStudent() {
         return studentService.getLastFiveStudent();
     }
+
+    @GetMapping("/all-name-student-stream")
+    public void getAllNameStudentStream() {
+        studentService.getAllNameStudentStream();
+    }
+
+    @GetMapping("/all-name-student-stream-synchronized")
+    public void getAllNameStudentSynchronized() {
+        studentService.getAllNameStudentSynchronized();
+    }
+
+
 
 }
 

@@ -108,4 +108,50 @@ public class StudentService {
         logger.debug("Method called:getAllStudent");
         return studentRepository.findAll();
     }
+
+    public void getAllNameStudentStream() {
+        logger.debug("Method called:getAllNameStudentStream");
+        List<String> nameStudent = getAllStudent().stream().map(s -> s.getName().toUpperCase()).collect(Collectors.toList());
+
+        System.out.println(nameStudent.get(0) + " stream 0");
+        System.out.println(nameStudent.get(1) + " stream 1");
+
+             new Thread(() -> {
+                System.out.println(nameStudent.get(2)+ " stream 2");
+                System.out.println(nameStudent.get(3)+ " stream 3");
+            }).start();
+
+
+            new Thread(() -> {
+                System.out.println(nameStudent.get(4)+ " stream 4");
+                System.out.println(nameStudent.get(5)+ " stream 5");
+            }).start();
+
+        System.out.println(nameStudent.get(6) + " stream 6");
+        System.out.println(nameStudent.get(7) + " stream 7");
+    }
+
+    public synchronized void getAllNameStudentSynchronized() {
+        logger.debug("Method called:getAllNameStudentSynchronized");
+        List<String> nameStudent = getAllStudent().stream().map(s -> s.getName().toUpperCase()).collect(Collectors.toList());
+
+        System.out.println(nameStudent.get(0) + " stream 0");
+        System.out.println(nameStudent.get(1) + " stream 1");
+
+             new Thread(() -> {
+                System.out.println(nameStudent.get(2)+ " stream 2");
+                System.out.println(nameStudent.get(3)+ " stream 3");
+            }).start();
+
+
+            new Thread(() -> {
+                System.out.println(nameStudent.get(4)+ " stream 4");
+                System.out.println(nameStudent.get(5)+ " stream 5");
+            }).start();
+
+        System.out.println(nameStudent.get(6) + " stream 6");
+        System.out.println(nameStudent.get(7) + " stream 7");
+    }
+
+
 }

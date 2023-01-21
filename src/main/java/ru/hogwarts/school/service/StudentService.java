@@ -19,6 +19,10 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
+    public Integer count = 0;
+
+    public Object flag = new Object();
+
     Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     public StudentService(StudentRepository studentRepository) {
@@ -131,26 +135,42 @@ public class StudentService {
         System.out.println(nameStudent.get(7) + " operation 7");
     }
 
-    public synchronized void getAllNameStudentSynchronized() {
+    public void getAllNameStudentSynchronized() {
         logger.debug("Method called:getAllNameStudentSynchronized");
-        List<String> nameStudent = getAllStudent().stream().map(s -> s.getName().toUpperCase()).collect(Collectors.toList());
-
-        System.out.println(nameStudent.get(0) + " operation 0");
-        System.out.println(nameStudent.get(1) + " operation 1");
+        //List<String> nameStudent = getAllStudent().stream().map(s -> s.getName().toUpperCase()).collect(Collectors.toList());
+        doOperation(0);
+        doOperation(1);
+//        System.out.println(nameStudent.get(0) + " operation 0");
+//        System.out.println(nameStudent.get(1) + " operation 1");
 
              new Thread(() -> {
-                System.out.println(nameStudent.get(2)+ " operation 2");
-                System.out.println(nameStudent.get(3)+ " operation 3");
+                 doOperation(2);
+                 doOperation(3);
+//                System.out.println(nameStudent.get(2)+ " operation 2");
+//                System.out.println(nameStudent.get(3)+ " operation 3");
             }).start();
 
 
             new Thread(() -> {
-                System.out.println(nameStudent.get(4)+ " operation 4");
-                System.out.println(nameStudent.get(5)+ " operation 5");
+                doOperation(4);
+                doOperation(5);
+//                System.out.println(nameStudent.get(4)+ " operation 4");
+//                System.out.println(nameStudent.get(5)+ " operation 5");
             }).start();
 
-        System.out.println(nameStudent.get(6) + " operation 6");
-        System.out.println(nameStudent.get(7) + " operation 7");
+        doOperation(6);
+        doOperation(7);
+//        System.out.println(nameStudent.get(6) + " operation 6");
+//        System.out.println(nameStudent.get(7) + " operation 7");
+    }
+
+    public void doOperation(int number) {
+        List<String> nameStudent = getAllStudent().stream().map(s -> s.getName().toUpperCase()).collect(Collectors.toList());
+        synchronized (flag) {
+            System.out.println(nameStudent.get(number) + " operation " + count);
+            count++;
+        }
+
     }
 
 
